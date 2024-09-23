@@ -1,6 +1,5 @@
+############################# SOLVED ####################################
 input = gets.to_i
-
-
 
 input.times do 
 
@@ -21,7 +20,3 @@ input.times do
 
   puts array[n-1]
 end
-
-
-
-# for i in 0 n
