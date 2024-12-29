@@ -78,89 +78,43 @@
 # puts "The answer is: #{@answer}"
 
 
-## VERSION I DID WITH HELP (I ONLY GOT HELP AFTER 1:30 HOURS AND EVEN THOUGH I THOUGHT I HAD CORRECT ANSWERS I DID NOT)
+## VERSION I DID WITH HELP (I ONLY GOT HELP AFTER SO MANY HOURS AND EVEN THOUGH I THOUGHT I HAD CORRECT ANSWERS I DID NOT)
 
+def is_safe(list)
+  # Check if differences between adjacent levels are within the valid range
+  return false unless list.each_cons(2).all? { |a, b| (1..3).include?((a - b).abs) }
 
+  # Check if the levels are consistently increasing or decreasing
+  increasing = list.each_cons(2).all? { |a, b| a < b }
+  decreasing = list.each_cons(2).all? { |a, b| a > b }
 
-def detect_discrepancy(list)
-  previous_direction = nil
-
-  list.each_cons(2) do |current, incoming|
-    if incoming > current
-      if previous_direction == :descending
-        @count = @count + 1
-        return true 
-      end
-      previous_direction = :ascending
-    elsif current > incoming
-      if previous_direction == :ascending
-        @count = @count + 1
-        return true
-      end
-      previous_direction = :descending
-    end
-  end
-
-  puts "this is counter test #{@count}"
-  return false
+  increasing || decreasing
 end
 
-
-def is_list_safe_with_dampener?(list)
-
-  if !safet_checker?(list)
-    
-  end
-
+def is_safe_with_dampener(list)
+  # Check if removing one level makes the list safe
   list.each_with_index do |_, i|
     modified_list = list.dup
     modified_list.delete_at(i)
-    puts modified_list.inspect
-    if !detect_discrepancy(modified_list)
-      return true 
-    end
+    return true if is_safe(modified_list)
   end
-
-  return false
+  false
 end
-
-def safety_checker?(list)
-  list.each_with_index do |number, i|
-    if i > 0 && i + 1 < list.length       # I HAD ISSUES FINDING OUT THIS IF STATEMENT TO PREVENT OVERBOUNDING 
-      if (number - list[i + 1]).abs > 3 
-        @safe = false
-        @count = 10
-      end
-      if number == list[i + 1] && (list[i+1] - list[i-1]).abs >3
-        @safe = false
-        @count = @count + 1
-      end
-    end
-  end
-end
-
 
 def main
   input = $stdin.read
-  @safe = true
-  @answer = 0
-  @count = 0
+  safe_count = 0
+
   input.each_line do |line|
     list = line.split.map(&:to_i)
 
-    if detect_discrepancy(list)
-      @safe = false
+    # Check if the report is safe or can be made safe with the Problem Dampener
+    if is_safe(list) || is_safe_with_dampener(list)
+      safe_count += 1
     end
-    
-    if is_list_safe_with_dampener?(list)
-      
-    end
-
-
-
   end
 
+  puts "The number of safe reports is: #{safe_count}"
 end
 
 main
-puts "The answer is: #{@answer}"
