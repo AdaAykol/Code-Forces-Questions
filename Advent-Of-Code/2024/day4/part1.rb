@@ -108,13 +108,9 @@ puts matrix.inspect
 rows = matrix.length
 cols = matrix[0].length
 
-# Check diagonally top-left to bottom-right
 (0..rows - searched_word.length).each do |i|
   (0..cols - searched_word.length).each do |j|
-    if matrix[i][j] == "X" &&
-       matrix[i + 1][j + 1] == "M" &&
-       matrix[i + 2][j + 2] == "A" &&
-       matrix[i + 3][j + 3] == "S"
+    if matrix[i][j] == "X" && matrix[i + 1][j + 1] == "M" && matrix[i + 2][j + 2] == "A" && matrix[i + 3][j + 3] == "S"
       count += 1
     elsif matrix[i][j] == "S" &&
           matrix[i + 1][j + 1] == "A" &&
@@ -125,7 +121,6 @@ cols = matrix[0].length
   end
 end
 
-# Check diagonally top-right to bottom-left
 (0..rows - searched_word.length).each do |i|
   (searched_word.length - 1...cols).each do |j|
     if matrix[i][j] == "X" &&
